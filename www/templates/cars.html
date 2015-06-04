@@ -1,18 +1,12 @@
 <ion-view view-title="Автомобили">
   <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="item in items"  href="#/app/playlists/{{playlist.id}}">
-        Hello, {{item}}!
-      </ion-item>
-      <ion-item   href="#/app/playlists/{{playlist.id}}">
-        Bentley VER45 - F001AAA
-      </ion-item>
-      <ion-item  href="#/app/playlists/{{playlist.id}}">
-        Lamborghini Veneno - F001AAB
+    <div class="list list-inset">
+      <ion-item ng-repeat="car in cars"  href="#/app/services/{{car.name}}">
+        {{car.name}}-{{car.number}}
       </ion-item>
       <ion-item>
         + Добавить авто
       </ion-item>
-    </ion-list>
+    </div>
   </ion-content>
 </ion-view>

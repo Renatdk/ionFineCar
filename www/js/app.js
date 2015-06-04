@@ -43,7 +43,26 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     url: "/cars",
     views: {
       'menuContent': {
-        templateUrl: "templates/cars.html"
+        templateUrl: "templates/cars.html",
+        controller: 'CarsCtrl'
+      }
+    }
+  })
+  .state('app.services', {
+    url: "/services/:car_name",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/user/choice_service.html",
+        controller: 'ChoiceServiceCtrl'
+      }
+    }
+  })
+  .state('app.choice_washer', {
+    url: "/choice_washer/:washer_description",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/user/choice_washer.html",
+        controller: 'ChoiceWasherCtrl'
       }
     }
   })

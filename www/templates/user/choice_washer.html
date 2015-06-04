@@ -1,0 +1,22 @@
+<ion-view view-title="Выбор автомойки">
+  <ion-content>
+    <div class="list">
+      <ion-item >
+        <a class="button button-small  button-full">{{geoObject}}</a>
+      </ion-item>
+      <ion-item>
+        <div class="button-bar">
+          <a class="button button-small" ng-class="getClass('km')" ng-click="sort_by('km')" >км</a>
+          <a class="button button-small" ng-class="getClass('price')" ng-click="sort_by('price')">цена</a>
+          <a class="button button-small" ng-class="getClass('time')" ng-click="sort_by('time')">время</a>
+        </div>
+
+      </ion-item>
+
+      <ion-item ng-repeat="washer in washers | orderBy:sorts"  href="#/app/choice_time/{{washer.name}}">
+        <h2>{{washer.name}} - {{washer.price}}тг</h2>
+        <p>{{washer.address}} - {{washer.km}}км</p>
+      </ion-item>
+    </div>
+  </ion-content>
+</ion-view>

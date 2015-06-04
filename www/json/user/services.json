@@ -1,0 +1,20 @@
+{
+   "services": [{
+        "name":"Minimal",
+        "description":"Кузов",
+        "time":"15-20 минут",
+        "price":"1000"
+    },
+    {
+        "name":"Standard",
+        "description":"Кузов+Салон",
+        "time":"30-40 минут",
+        "price":"2000"
+    },
+    {
+        "name":"Standard+",
+        "description":"Кузов+Салон+Багажник",
+        "time":"40-50 минут",
+        "price":"2500"
+    }]
+}

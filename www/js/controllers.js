@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers',  ['starter.factory'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   
@@ -50,6 +50,75 @@ angular.module('starter.controllers', [])
     { title: 'Rap', id: 5 },
     { title: 'Cowbell', id: 6 }
   ];
+})
+.controller('CarsCtrl', function($scope, $http) {
+  $scope.cars=[];
+  $http.get('json/user/cars.json').success(function(data){
+    $scope.cars=data.cars;  
+  });
+})
+
+.controller('ChoiceServiceCtrl', function($scope, $stateParams, UserBid, $http) {
+  UserBid.car_name=$stateParams.car_name;
+  $http.get('json/user/services.json').success(function(data){
+    $scope.services=data.services;  
+  });
+})
+
+.controller('ChoiceWasherCtrl', function($scope, $stateParams, UserBid, $http, $cordovaGeolocation) {
+  UserBid.car_name=$stateParams.description;
+  
+  $http.get('json/user/washers.json').success(function(data){
+    $scope.washers=data.washers;  
+  });
+  
+   $scope.sorts='km';
+   $scope.sort_by =function (val){
+    $scope.sorts=val;
+    console.log(val);
+  };
+  $scope.getClass = function(path) {
+    if ($scope.sorts == path) {
+      return "active"
+    } else {
+      return ""
+    }
+  }
+  $scope.geoObject="Определение местоположения..."
+  var posOptions = {timeout: 10000, enableHighAccuracy: false};
+  $cordovaGeolocation
+    .getCurrentPosition(posOptions)
+    .then(function (position) {
+      $scope.lat  = position.coords.latitude;
+      $scope.long = position.coords.longitude;
+      $http.get('http://geocode-maps.yandex.ru/1.x/?format=json&geocode='+$scope.long+','+$scope.lat).success(function(data){
+        $scope.geoObject=data.response.GeoObjectCollection.featureMember[0].GeoObject.name;  
+        console.log(data);
+      });
+    }, function(err) {
+      // error
+    });
+
+
+  var watchOptions = {
+    frequency : 1000,
+    timeout : 3000,
+    enableHighAccuracy: false // may cause errors if true
+  };
+
+  var watch = $cordovaGeolocation.watchPosition(watchOptions);
+  watch.then(
+    null,
+    function(err) {
+      // error
+    },
+    function(position) {
+      var lat  = position.coords.latitude
+      var long = position.coords.longitude
+  });
+
+  
+  
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {

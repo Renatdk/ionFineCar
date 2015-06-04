@@ -1,0 +1,13 @@
+<ion-view view-title="Выбор услуг">
+  <ion-content>
+    <div class="list">
+      <ion-item ng-repeat="service in services"  href="#/app/choice_washer/{{service.description}}">
+        <h2>{{service.name}}</h2>
+        <p>{{service.description}}</p>
+      </ion-item>
+      <ion-item>
+        + Сформировать комплекс услуг
+      </ion-item>
+    </div>
+  </ion-content>
+</ion-view>
