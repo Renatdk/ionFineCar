@@ -51,31 +51,115 @@ angular.module('starter.controllers',  ['starter.factory'])
     { title: 'Cowbell', id: 6 }
   ];
 })
-.controller('CarsCtrl', function($scope, $http) {
+.controller('CarsCtrl', function($scope, $ionicModal, $http, $timeout) {
   $scope.cars=[];
   $http.get('json/user/cars.json').success(function(data){
     $scope.cars=data.cars;  
   });
+
+  // Form data for the login modal
+  $scope.addCartData = {};
+
+  // Create the login modal that we will use later
+  $ionicModal.fromTemplateUrl('templates/modal/add_auto.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  // Triggered in the login modal to close it
+  $scope.closeAddCar = function() {
+    $scope.modal.hide();
+  };
+
+  // Open the login modal
+  $scope.addCar = function() {
+    $scope.addCartData={};
+    $scope.modal.show();
+  };
+
+  // Perform the login action when the user submits the login form
+  $scope.doAddCar = function() {
+    $scope.cars.push($scope.addCartData);
+    // Simulate a login delay. Remove this and replace with your login
+    // code if using a login system
+    $timeout(function() {
+      $scope.closeAddCar();
+    }, 1000);
+  };
+
+
 })
 
-.controller('ChoiceServiceCtrl', function($scope, $stateParams, UserBid, $http) {
+.controller('ChoiceServiceCtrl', function($scope, $stateParams, $ionicModal, UserBid, $http, $timeout) {
   UserBid.car_name=$stateParams.car_name;
   $http.get('json/user/services.json').success(function(data){
     $scope.services=data.services;  
   });
+  $http.get('json/user/modal_services.json').success(function(data){
+    $scope.modal_services=data.services;  
+  });
+
+  $scope.user = {
+    modal_services: []
+  };
+
+  // Form data for the login modal
+  $scope.addServicesData = {};
+
+  // Create the login modal that we will use later
+  $ionicModal.fromTemplateUrl('templates/modal/add_services.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  // Triggered in the login modal to close it
+  $scope.closeAddServices = function() {
+    $scope.modal.hide();
+  };
+
+  // Open the login modal
+  $scope.addServices = function() {
+    $scope.addServicesData={};
+    $scope.modal.show();
+  };
+
+  // Perform the login action when the user submits the login form
+  $scope.doAddServices = function() {
+    
+    if(!$scope.addServicesData.name){$scope.addServicesData.name="Mega+"}
+    
+    $scope.addServicesData.description="";
+    $scope.addServicesData.price=0;
+    $scope.addServicesData.time=0;
+    
+    console.log($scope.user,$scope.addServicesData.groupName);
+    
+    angular.forEach($scope.user.modal_services, function(value, key) {
+      $scope.addServicesData.description+=value.name+"+";
+      $scope.addServicesData.price+=parseFloat(value.price);
+      $scope.addServicesData.time+=parseInt(value.time);
+    }); 
+    
+    console.log($scope.addServicesData);
+    $timeout(function() {
+      $scope.closeAddServices();
+    }, 1000);
+
+    $scope.services.push($scope.addServicesData);
+  };
+
+
 })
 
-.controller('ChoiceWasherCtrl', function($scope, $stateParams, UserBid, $http, $cordovaGeolocation) {
+.controller('ChoiceWasherCtrl', function($scope, $stateParams, UserBid, $http, $cordovaGeolocation, getDastance) {
+
   UserBid.car_name=$stateParams.description;
   
-  $http.get('json/user/washers.json').success(function(data){
-    $scope.washers=data.washers;  
-  });
-  
-   $scope.sorts='km';
-   $scope.sort_by =function (val){
+  $scope.sorts='km';
+  $scope.sort_by =function (val){
     $scope.sorts=val;
-    console.log(val);
   };
   $scope.getClass = function(path) {
     if ($scope.sorts == path) {
@@ -91,33 +175,20 @@ angular.module('starter.controllers',  ['starter.factory'])
     .then(function (position) {
       $scope.lat  = position.coords.latitude;
       $scope.long = position.coords.longitude;
+      $scope.geoObject="Координаты определены..."
       $http.get('http://geocode-maps.yandex.ru/1.x/?format=json&geocode='+$scope.long+','+$scope.lat).success(function(data){
         $scope.geoObject=data.response.GeoObjectCollection.featureMember[0].GeoObject.name;  
-        console.log(data);
       });
+      $http.get('json/user/washers.json').then(function(data){
+        $scope.washers=data.data.washers;
+        angular.forEach($scope.washers, function(value, key) {
+          value.km=getDastance.distance(value.lat,value.long,$scope.lat,$scope.long);
+        }, $scope.washers);     
+      });
+    
     }, function(err) {
       // error
     });
-
-
-  var watchOptions = {
-    frequency : 1000,
-    timeout : 3000,
-    enableHighAccuracy: false // may cause errors if true
-  };
-
-  var watch = $cordovaGeolocation.watchPosition(watchOptions);
-  watch.then(
-    null,
-    function(err) {
-      // error
-    },
-    function(position) {
-      var lat  = position.coords.latitude
-      var long = position.coords.longitude
-  });
-
-  
   
 })
 

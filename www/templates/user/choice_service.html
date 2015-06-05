@@ -1,11 +1,12 @@
 <ion-view view-title="Выбор услуг">
   <ion-content>
     <div class="list">
-      <ion-item ng-repeat="service in services"  href="#/app/choice_washer/{{service.description}}">
+      <ion-item ng-repeat="service in services track by $index"  href="#/app/choice_washer/{{service.description}}">
         <h2>{{service.name}}</h2>
-        <p>{{service.description}}</p>
+        <p>{{service.description}} ~{{service.price}} тенге</p>
+        <p> {{service.time}} минут</p>
       </ion-item>
-      <ion-item>
+      <ion-item ng-click="addServices()">
         + Сформировать комплекс услуг
       </ion-item>
     </div>

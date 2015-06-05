@@ -15,7 +15,7 @@
 
       <ion-item ng-repeat="washer in washers | orderBy:sorts"  href="#/app/choice_time/{{washer.name}}">
         <h2>{{washer.name}} - {{washer.price}}тг</h2>
-        <p>{{washer.address}} - {{washer.km}}км</p>
+        <p>{{washer.address}} - {{washer.km}} км</p><p>  время:{{washer.time}}</p>
       </ion-item>
     </div>
   </ion-content>

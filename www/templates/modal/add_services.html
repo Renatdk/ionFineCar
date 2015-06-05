@@ -1,0 +1,34 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Сформировать комплекс услуг</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeAddServices()">Закрыть</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="doAddServices()">
+      <div class="list">
+        
+        
+          
+          <div class="item item-checkbox" ng-repeat="service in modal_services">
+             <label class="checkbox">
+               <input type="checkbox" checklist-model="user.modal_services" checklist-value="service"> 
+             </label>
+             <h2>{{service.name}}</h2>
+            <p>{{service.short_description}}</p>
+            <p>{{service.description}}</p>
+          </div>
+        
+        <label class="item item-input">
+          <span class="input-label">Название группы</span>
+          <input type="text" ng-model="addServicesData.name" placeholder="Standard++">
+        </label>
+        
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Добавить</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

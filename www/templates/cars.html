@@ -1,10 +1,10 @@
 <ion-view view-title="Автомобили">
   <ion-content>
     <div class="list list-inset">
-      <ion-item ng-repeat="car in cars"  href="#/app/services/{{car.name}}">
+      <ion-item ng-repeat="car in cars track by $index"  href="#/app/services/{{car.name}}">
         {{car.name}}-{{car.number}}
       </ion-item>
-      <ion-item>
+      <ion-item  ng-click="addCar()">
         + Добавить авто
       </ion-item>
     </div>
